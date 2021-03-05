@@ -1,5 +1,6 @@
 import curses
 import time
+import bcrypt
 
 
 def join(stdscr):
@@ -16,4 +17,8 @@ def join(stdscr):
     stdscr.addstr(20, 32, "CREATE A PASSWORD")
     username = stdscr.getstr(12, 32, 15)
     password = stdscr.getstr(22, 32, 15)
+    password = bytes(password, "utf-8")
+
+    hashedpw = bcrypt.hashpw(password, bcrypt.gensalt())
     curses.curs_set(0)
+    return username, password

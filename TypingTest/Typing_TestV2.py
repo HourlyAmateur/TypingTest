@@ -102,7 +102,7 @@ def load_missed(keylist):
     """ this function will be used to store the 
     users data in an sql database for future use
     """
-    conn =sq.connect("missedkeys.sqlite")
+    conn = sq.connect("userdata.sqlite")
     cur = conn.cursor()
     cur.executemany("UPDATE OR IGNORE Keys SET total = total + 1 WHERE name = (?)", keylist)
     conn.commit()
