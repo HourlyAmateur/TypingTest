@@ -17,7 +17,7 @@ def type_test(stdscr):
     curses.use_default_colors()
     curses.update_lines_cols()
     curses.cbreak()
-    curses.resize_term(40, 75)  
+    curses.resize_term(30, 75)  
     stdscr.keypad(True)
     missedkeys = []
 

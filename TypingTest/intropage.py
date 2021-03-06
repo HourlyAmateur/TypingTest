@@ -8,7 +8,9 @@ menu = ["FREE PLAY", "LOG IN", "JOIN", "QUIT"]
 
 def printmenu(stdscr, selected):
     
+
     stdscr.clear()
+    curses.resize_term(30, 70)
     h, w = stdscr.getmaxyx()
 
     for idx, row in enumerate(menu):
