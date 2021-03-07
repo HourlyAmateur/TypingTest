@@ -50,7 +50,7 @@ def join(stdscr):
             password = password[:-1]
             stdscr.delch()
         else:
-            password += str(key)
+            password += chr(key)
     
     password = bytes(password, "utf-8")
     hashedpw = bcrypt.hashpw(password, bcrypt.gensalt())

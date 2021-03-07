@@ -79,6 +79,7 @@ def type_test(stdscr):
                 missedkeys.append(characters[characterstyped])
                 characterstyped += 1
                 linetyped += 1
+
             else:
                 raise AssertionError
             stdscr.refresh()
