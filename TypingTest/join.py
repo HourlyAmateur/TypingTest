@@ -20,9 +20,8 @@ def join(stdscr):
     username = stdscr.getstr(12, 32, 15)
     
     password = stdscr.getstr(22, 32, 15)
-    # password = bytes(password, "utf-8")
+    
     hashedpw = bcrypt.hashpw(password, bcrypt.gensalt())
-
     usersetup.init_user(str(username), str(hashedpw))
     curses.curs_set(0)
     return username, password
