@@ -3,6 +3,9 @@ import time
 import sqlite3 as sq 
 import gettext
 
+escape = 27
+enter = 10
+backspace = 8
 
 def type_test(stdscr):
     """
@@ -45,7 +48,7 @@ def type_test(stdscr):
             stdscr.addstr(y, linetyped, linelist[linenum][linetyped:])
             stdscr.clrtoeol()
             key = stdscr.getch()
-            if key == 10 and characters[characterstyped] == '\n':               # enter key
+            if key == enter and characters[characterstyped] == '\n':               # enter key
                 y += 1
                 stdscr.move(y, 0)
                 typed = ""
@@ -57,7 +60,7 @@ def type_test(stdscr):
                 typed += chr(key)
                 characterstyped += 1
                 linetyped += 1
-            elif key == 8:
+            elif key == backspace:
                 if characterstyped > 0:                                  # backspace
                     typed = typed[:-1]
                     stdscr.refresh()
@@ -65,9 +68,9 @@ def type_test(stdscr):
                     linetyped -= 1
                 else:
                     pass
-            elif key == 27:                                                 # escape key
+            elif key == escape:                                                 # escape key
                 break
-            elif key == 10 and characters[characterstyped] == '\n':         # enter key
+            elif key == enter and characters[characterstyped] == '\n':         # enter key
                 y += 1
                 stdscr.move(y, 0)
                 typed += chr(key)

@@ -4,14 +4,17 @@ import string
 
 
 
-def init_user(un, pswd):
+def create_db():
+    """
+    This creates the database on the first use of the join page
+    """
     conn = sl.connect("userdata.sqlite")
     cur = conn.cursor()
 
     cur.execute("""
         CREATE TABLE IF NOT EXISTS Users (
             Id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
-            UserName TEXT UNIQUE,
+            UserName TEXT,
             Password INTEGER 
             )        
     """)
@@ -29,26 +32,38 @@ def init_user(un, pswd):
             UserId INTEGER
             )
     """)
-   
+    conn.commit()
+    conn.close()
+
+
+
+
+
+def create_user(un, pswd):
+    """
+    Runs any time a new user joins
+    """
+    conn = sl.connect("userdata.sqlite")
+    cur = conn.cursor()
     cur.execute("""
-        INSERT OR IGNORE INTO Users (UserName, Password) VALUES (?,?)
+        INSERT INTO Users (UserName, Password) VALUES (?,?)
     """, (un, pswd))
-    
     conn.commit()
     conn.close()
 
 
 def user_look_up(un):
+    """
+    Checks to see if a username is taken
+    """
     conn = sl.connect("userdata.sqlite")
     cur = conn.cursor()
-    out = ''
     cur.execute("""
         SELECT UserName FROM Users WHERE UserName =?
     """, (un,))
     if len(cur.fetchall()) > 0:
-        out += "there is already a user by that name"
-
+        conn.close()
+        return True
     else:
-        out += "Welcome "+str(un)
-    conn.close()
-    return out
+        conn.close()
+        return False

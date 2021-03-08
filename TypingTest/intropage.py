@@ -2,6 +2,7 @@ import curses
 import time
 import Typing_TestV2
 import join
+import login
 
 
 menu = ["FREE PLAY", "LOG IN", "JOIN", "QUIT"]
@@ -61,7 +62,10 @@ def main(stdscr):
                 gohere = printmenu(stdscr, chosen)
                 stdscr.refresh()
             elif menu[gohere] == "LOG IN":
-                pass
+                login.log_in(stdscr)
+                stdscr.clear()
+                gohere = printmenu(stdscr, chosen)
+                stdscr.refresh()
             elif menu[gohere] == "JOIN":
                 join.join(stdscr)
                 stdscr.clear()
