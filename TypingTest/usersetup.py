@@ -1,6 +1,7 @@
 from os import unlink
 import sqlite3 as sl
 import string
+import bcrypt
 
 
 
@@ -67,3 +68,24 @@ def user_look_up(un):
     else:
         conn.close()
         return False
+
+def user_login(un, password):
+    """
+    retrievs user credentials 
+    """
+    password = bytes(password, "UTF-8")
+    conn = sl.connect("userdata.sqlite")
+    cur = conn.cursor()
+    cur.execute("""
+        SELECT Password FROM Users WHERE UserName =?
+    """, (un,))
+    users = cur.fetchall()
+    conn.close()
+    if len(users) < 1:
+        return "there are no users by that name"
+        
+    else:
+        if bcrypt.checkpw(password, users[0][0]):
+            print("good match")
+        else:
+            print("no good")

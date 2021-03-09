@@ -1,3 +1,4 @@
+import usersetup
 import curses
 import sqlite3 as sl
 
@@ -48,5 +49,7 @@ def log_in(stdscr):
             stdscr.delch()
         else:
             password += chr(key)
+
+    stdscr.addstr(0,0, usersetup.user_login(username, password))
     curses.curs_set(0)
     return
