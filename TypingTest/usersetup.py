@@ -16,7 +16,7 @@ def create_db():
         CREATE TABLE IF NOT EXISTS Users (
             Id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
             UserName TEXT,
-            Password INTEGER 
+            Password TEXT
             )        
     """)
 
@@ -47,8 +47,8 @@ def create_user(un, pswd):
     conn = sl.connect("userdata.sqlite")
     cur = conn.cursor()
     cur.execute("""
-        INSERT INTO Users (UserName, Password) VALUES (?,?)
-    """, (un, pswd))
+        INSERT INTO Users (UserName, Password) VALUES (?,CAST (? AS TEXT))
+    """,(un, pswd))
     conn.commit()
     conn.close()
 
@@ -73,19 +73,21 @@ def user_login(un, password):
     """
     retrievs user credentials 
     """
-    password = bytes(password, "UTF-8")
+    password = bytes(password, 'utf-8')
     conn = sl.connect("userdata.sqlite")
     cur = conn.cursor()
     cur.execute("""
-        SELECT Password FROM Users WHERE UserName =?
+        SELECT Password, CAST(Password AS BLOB) FROM Users WHERE UserName =?
     """, (un,))
-    users = cur.fetchall()
+    conn.commit()
+    possible = cur.fetchone()
+    possible = possible[0]
+    possible = bytes(possible, "utf-8")
     conn.close()
-    if len(users) < 1:
-        return "there are no users by that name"
-        
+    if len(possible) < 1:
+        return "no users by that name"    
     else:
-        if bcrypt.checkpw(password, users[0][0]):
-            print("good match")
+        if bcrypt.checkpw(password, possible):
+            return "good match"
         else:
-            print("no good")
+            return "no good"

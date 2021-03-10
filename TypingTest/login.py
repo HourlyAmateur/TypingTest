@@ -1,6 +1,7 @@
 import usersetup
 import curses
 import sqlite3 as sl
+import time
 
 escape = 27
 enter = 10
@@ -29,6 +30,8 @@ def log_in(stdscr):
         if key == escape:                      
             curses.curs_set(0)
             return
+        elif key == enter:
+            break
         elif key == backspace:
             username = username[:-1]
             stdscr.delch()
@@ -44,12 +47,17 @@ def log_in(stdscr):
         if key == escape:                      
             curses.curs_set(0)
             return
+        elif key == enter:
+            break
         elif key == backspace:
             password = password[:-1]
             stdscr.delch()
         else:
             password += chr(key)
 
-    stdscr.addstr(0,0, usersetup.user_login(username, password))
+    hello = usersetup.user_login(username, password)
+    stdscr.addstr(0,0, hello)
+    stdscr.refresh()
+    time.sleep(3)
     curses.curs_set(0)
     return
