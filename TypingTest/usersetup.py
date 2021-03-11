@@ -44,10 +44,11 @@ def create_user(un, pswd):
     """
     Runs any time a new user joins
     """
+    pswd = pswd.hex()
     conn = sl.connect("userdata.sqlite")
     cur = conn.cursor()
     cur.execute("""
-        INSERT INTO Users (UserName, Password) VALUES (?,CAST (? AS TEXT))
+        INSERT INTO Users (UserName, Password) VALUES (?,?)
     """,(un, pswd))
     conn.commit()
     conn.close()
@@ -77,17 +78,18 @@ def user_login(un, password):
     conn = sl.connect("userdata.sqlite")
     cur = conn.cursor()
     cur.execute("""
-        SELECT Password, CAST(Password AS BLOB) FROM Users WHERE UserName =?
+        SELECT Password FROM Users WHERE UserName =?
     """, (un,))
-    conn.commit()
     possible = cur.fetchone()
-    possible = possible[0]
-    possible = bytes(possible, "utf-8")
+    possible2 = bytearray.fromhex(possible[0])
+    possibilities = ''
+    for x in possible2:
+        possibilities += chr(x)
     conn.close()
     if len(possible) < 1:
         return "no users by that name"    
     else:
-        if bcrypt.checkpw(password, possible):
+        if bcrypt.checkpw(password, possibilities.encode('utf-8')):
             return "good match"
         else:
             return "no good"
