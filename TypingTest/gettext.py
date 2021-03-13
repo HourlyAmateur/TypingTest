@@ -33,5 +33,4 @@ def wiki_pull():
                 else:
                     text.write(x)
                     count += 1 
-    else:
-        print("error")
+

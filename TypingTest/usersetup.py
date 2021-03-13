@@ -1,8 +1,7 @@
-from os import unlink
 import sqlite3 as sl
 import string
 import bcrypt
-
+import time
 
 
 def create_db():
@@ -37,14 +36,11 @@ def create_db():
     conn.close()
 
 
-
-
-
+#################################################################
 def create_user(un, pswd):
     """
     Runs any time a new user joins
     """
-    pswd = pswd.hex()
     conn = sl.connect("userdata.sqlite")
     cur = conn.cursor()
     cur.execute("""
@@ -54,6 +50,7 @@ def create_user(un, pswd):
     conn.close()
 
 
+########################################################
 def user_look_up(un):
     """
     Checks to see if a username is taken
@@ -70,26 +67,26 @@ def user_look_up(un):
         conn.close()
         return False
 
+
+########################################################
 def user_login(un, password):
     """
-    retrievs user credentials 
+    retrieves user credentials 
     """
-    password = bytes(password, 'utf-8')
+    password2 = bytes(password, 'utf-8')
     conn = sl.connect("userdata.sqlite")
     cur = conn.cursor()
     cur.execute("""
         SELECT Password FROM Users WHERE UserName =?
     """, (un,))
     possible = cur.fetchone()
-    possible2 = bytearray.fromhex(possible[0])
-    possibilities = ''
-    for x in possible2:
-        possibilities += chr(x)
+    print(possible)
+    print(possible[0])
     conn.close()
     if len(possible) < 1:
         return "no users by that name"    
     else:
-        if bcrypt.checkpw(password, possibilities.encode('utf-8')):
-            return "good match"
+        if bcrypt.checkpw(password2, possible[0]):
+            return "holy crap it worked"
         else:
-            return "no good"
+            return f"not {possible[0]}"

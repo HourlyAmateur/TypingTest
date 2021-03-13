@@ -70,9 +70,8 @@ def join(stdscr):
         else:
             password += chr(key)
     
-    password = bytes(password, "utf-8")
-    hashedpw = bcrypt.hashpw(password, bcrypt.gensalt())
-
+    password2 = bytes(password[:-1], "utf-8")
+    hashedpw = bcrypt.hashpw(password2, bcrypt.gensalt())
     stdscr.addnstr(0,0, hashedpw, 200)
     stdscr.refresh()
     time.sleep(2)
