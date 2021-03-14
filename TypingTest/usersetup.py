@@ -47,6 +47,12 @@ def create_user(un, pswd):
         INSERT INTO Users (UserName, Password) VALUES (?,?)
     """,(un, pswd))
     conn.commit()
+
+    cur.execute("""
+        SELECT Users.Id, Stats.UserId FROM Users JOIN Stats 
+        ON Stats.UserId = Users.Id
+    """)
+    conn.commit
     conn.close()
 
 
@@ -80,13 +86,20 @@ def user_login(un, password):
         SELECT Password FROM Users WHERE UserName =?
     """, (un,))
     possible = cur.fetchone()
-    print(possible)
-    print(possible[0])
     conn.close()
-    if len(possible) < 1:
-        return "no users by that name"    
+    if possible == None:
+        return None    
     else:
         if bcrypt.checkpw(password2, possible[0]):
-            return "holy crap it worked"
-        else:
-            return f"not {possible[0]}"
+            return un
+    
+
+def user_stats(un):
+    """
+    retrieves users statistics from the database
+    """
+    conn = sl.connect("userdata.sqlite")
+    cur = conn.cursor()
+    cur.execute("""
+        SELECT * FROM Stats WHERE UserId = ?
+    """,(un,))  

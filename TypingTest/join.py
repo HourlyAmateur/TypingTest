@@ -72,9 +72,6 @@ def join(stdscr):
     
     password2 = bytes(password[:-1], "utf-8")
     hashedpw = bcrypt.hashpw(password2, bcrypt.gensalt())
-    stdscr.addnstr(0,0, hashedpw, 200)
-    stdscr.refresh()
-    time.sleep(2)
     usersetup.create_user(username, hashedpw)
 
     curses.curs_set(0)
