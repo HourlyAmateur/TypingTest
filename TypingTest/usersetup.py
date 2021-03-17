@@ -129,6 +129,7 @@ def add_stats(un, pk, time, wpm, words):
 
 def add_keys(pk, missed):
     """
+    WORK IN PROGRESS
     adds missed keys to the database
     """
     conn = sl.connect("userdata.sqlite")
