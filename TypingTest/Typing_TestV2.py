@@ -2,6 +2,7 @@ import curses
 import time
 import sqlite3 as sq 
 import gettext
+import usersetup
 
 escape = 27
 enter = 10
@@ -102,12 +103,4 @@ def type_test(stdscr):
     return 0
 
 
-def load_missed(keylist):
-    """ this function will be used to store the 
-    users data in an sql database for future use
-    """
-    conn = sq.connect("userdata.sqlite")
-    cur = conn.cursor()
-    cur.executemany("UPDATE OR IGNORE Keys SET total = total + 1 WHERE name = (?)", keylist)
-    conn.commit()
-    conn.close()
+#usersetup.add_stats(un, pk, elapsedtime, wordspermin, words)

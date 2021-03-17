@@ -49,9 +49,14 @@ def create_user(un, pswd):
     conn.commit()
 
     cur.execute("""
-        SELECT Users.Id, Stats.UserId FROM Users JOIN Stats 
-        ON Stats.UserId = Users.Id
-    """)
+        SELECT Id FROM Users WHERE UserName = ?
+    """, (un, ))
+    userid = cur.fetchone()
+    cur.execute("""
+    --sql
+        INSERT INTO Stats (UserId) VALUES (?)
+    ;
+    """, (userid[0], ))
     conn.commit
     conn.close()
 
@@ -93,9 +98,11 @@ def user_login(un, password):
         if bcrypt.checkpw(password2, possible[0]):
             return un
     
+#################################################################
 
 def user_stats(un):
     """
+    WORK IN PROGRESS
     retrieves users statistics from the database
     """
     conn = sl.connect("userdata.sqlite")
@@ -103,3 +110,29 @@ def user_stats(un):
     cur.execute("""
         SELECT * FROM Stats WHERE UserId = ?
     """,(un,))  
+
+##################################################################
+
+def add_stats(un, pk, time, wpm, words):
+    """
+    WORK IN PROGRESS
+    adds user data to the statistics table
+    """
+    conn = sl.connect("userdata.sqlite")
+    cur = conn.cursor()
+    cur.execute("""
+        INSERT INTO Stats (TotalWords + ?, TotalTime + ?, Completed + 1, (WpmAverage + wpm) / 2)    
+        VALUES (?,?,?) WHERE UserId = pk 
+    """, (words, time, wpm))
+
+####################################################################
+
+def add_keys(pk, missed):
+    """
+    adds missed keys to the database
+    """
+    conn = sl.connect("userdata.sqlite")
+    cur = conn.cursor()
+    cur.executemany("""
+        INSERT INTO Stats key VALUES (?) WHERE UserId = pk
+    """, missed)
