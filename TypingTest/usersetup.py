@@ -88,28 +88,32 @@ def user_login(un, password):
     conn = sl.connect("userdata.sqlite")
     cur = conn.cursor()
     cur.execute("""
-        SELECT Password FROM Users WHERE UserName =?
+        SELECT * FROM Users WHERE UserName =?
     """, (un,))
-    possible = cur.fetchone()
+    possible = cur.fetchone()                   # (Id,  UserName, Password)
     conn.close()
     if possible == None:
         return None    
     else:
-        if bcrypt.checkpw(password2, possible[0]):
-            return un
+        if bcrypt.checkpw(password2, possible[2]):
+            return possible
+        else:
+            return (1, 1)
     
 #################################################################
 
-def user_stats(un):
+def user_stats(id):
     """
-    WORK IN PROGRESS
     retrieves users statistics from the database
     """
     conn = sl.connect("userdata.sqlite")
     cur = conn.cursor()
     cur.execute("""
         SELECT * FROM Stats WHERE UserId = ?
-    """,(un,))  
+    """,(id,))
+    data = cur.fetchone()
+    conn.close() 
+    return data 
 
 ##################################################################
 
@@ -117,13 +121,35 @@ def add_stats(un, pk, time, wpm, words):
     """
     WORK IN PROGRESS
     adds user data to the statistics table
+     Id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
+            TotalWords REAL DEFAULT 0.0,
+            TotalTime REAL DEFAULT 0.0,
+            Completed INTEGER DEFAULT 0,
+            WpmAverage REAL DEFAULT 0.0,
+            MissedKeys TEXT,
+            MissedMost TEXT,
+            UserId INTEGER
     """
     conn = sl.connect("userdata.sqlite")
     cur = conn.cursor()
     cur.execute("""
-        INSERT INTO Stats (TotalWords + ?, TotalTime + ?, Completed + 1, (WpmAverage + wpm) / 2)    
-        VALUES (?,?,?) WHERE UserId = pk 
-    """, (words, time, wpm))
+    --sql
+        UPDATE Stats SET TotalTime = TotalTime + ? WHERE UserId = ? 
+    ;
+    """, (time, pk))
+    cur.execute("""
+    --sql
+        UPDATE Stats SET Completed = Completed + 1 WHERE UserId = ?
+    ;
+    """, (pk, ))
+    cur.execute("""
+    --sql
+        UPDATE Stats SET WpmAverage = (WpmAverage + ?) / 2 WHERE UserId = ?
+    ;
+    """, (wpm, pk))
+
+    conn.commit()
+    conn.close()
 
 ####################################################################
 

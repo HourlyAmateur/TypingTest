@@ -103,4 +103,6 @@ def type_test(stdscr):
     return 0
 
 
+if __name__ == "userpage":
+    print("ahhhhhhhhhhhhhhhhhhhhhhh")
 #usersetup.add_stats(un, pk, elapsedtime, wordspermin, words)

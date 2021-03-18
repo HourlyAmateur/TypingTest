@@ -17,7 +17,7 @@ def log_in(stdscr):
         curses.init_pair(2, curses.COLOR_RED, curses.COLOR_BLACK)
         curses.use_default_colors()
         curses.cbreak()
-        curses.resize_term(40, 80) 
+        curses.resize_term(30, 75) 
         curses.update_lines_cols() 
         stdscr.keypad(True)
 
@@ -58,8 +58,10 @@ def log_in(stdscr):
             else:
                 password += chr(key)
 
-        if usersetup.user_login(username, password) == username:
-            userpage.user_page(stdscr, username)
+        
+        name = usersetup.user_login(username, password)        # returns a tuple (Id, UserName, Password) 
+        if name[1] == username:
+            userpage.user_page(stdscr, name[0], name[1])
             trying = False
             
         else:
