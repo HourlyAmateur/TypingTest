@@ -117,7 +117,7 @@ def user_stats(id):
 
 ##################################################################
 
-def add_stats(un, pk, time, wpm, words):
+def add_stats(pk, time, wpm):
     """
     WORK IN PROGRESS
     adds user data to the statistics table
@@ -144,7 +144,7 @@ def add_stats(un, pk, time, wpm, words):
     """, (pk, ))
     cur.execute("""
     --sql
-        UPDATE Stats SET WpmAverage = (WpmAverage + ?) / 2 WHERE UserId = ?
+        UPDATE Stats SET WpmAverage = (WpmAverage + ?) / Completed WHERE UserId = ?
     ;
     """, (wpm, pk))
 

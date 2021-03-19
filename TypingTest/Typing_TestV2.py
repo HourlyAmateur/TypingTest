@@ -100,9 +100,5 @@ def type_test(stdscr):
     stdscr.addstr(13, 10, f"you typed {round(wordspermin, 1)} words per min on average")
     stdscr.addstr(14, 10, "press any key to return to the main menu")
     stdscr.getch()
-    return 0
-
-
-if __name__ == "userpage":
-    print("ahhhhhhhhhhhhhhhhhhhhhhh")
-#usersetup.add_stats(un, pk, elapsedtime, wordspermin, words)
+    
+    return (elapsedtime, wordspermin)
