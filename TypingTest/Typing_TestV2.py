@@ -101,4 +101,4 @@ def type_test(stdscr):
     stdscr.addstr(14, 10, "press any key to return to the main menu")
     stdscr.getch()
     
-    return (elapsedtime, wordspermin)
+    return (elapsedtime, wordspermin, missedkeys)

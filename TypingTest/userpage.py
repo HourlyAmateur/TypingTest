@@ -30,14 +30,15 @@ def user_page(stdscr, id, un):
         stdscr.addstr(13, 15, f"Congratulations you have completed {completed} texts")
         stdscr.addstr(14, 15, f"Your current typing speed average is {round(wpm, 1)} Words per miniute")
         stdscr.addstr(15, 15, f"Your top 3 most often missed keys are {missedmost}")
-        stdscr.addstr(17, 15, "Press enter to play todays text")
+        stdscr.addstr(17, 15, "Press Enter to play todays text")
+        stdscr.addstr(18, 15, "Press Escape to Exit")
         stdscr.refresh()
         key = stdscr.getch()
         if key == escape:
             return
         else:
             stdscr.clear()
-            elapsedtime, totwpm = Typing_TestV2.type_test(stdscr)
+            elapsedtime, totwpm, missedkeys = Typing_TestV2.type_test(stdscr)
             usersetup.add_stats(id, elapsedtime, totwpm)
             stdscr.clear()
         
