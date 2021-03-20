@@ -142,16 +142,7 @@ def user_stats(id):
 
 def add_stats(pk, time, wpm):
     """
-    WORK IN PROGRESS
     adds user data to the statistics table
-     Id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
-            TotalWords REAL DEFAULT 0.0,
-            TotalTime REAL DEFAULT 0.0,
-            Completed INTEGER DEFAULT 0,
-            WpmAverage REAL DEFAULT 0.0,
-            MissedKeys TEXT,
-            MissedMost TEXT,
-            UserId INTEGER
     """
     conn = sl.connect("userdata.sqlite")
     cur = conn.cursor()
