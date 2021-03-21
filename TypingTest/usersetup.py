@@ -4,7 +4,8 @@ import bcrypt
 import time
 
 keychars = []
-[keychars.append(x) for x in string.printable]
+[keychars.append(x) for x in string.ascii_uppercase]
+
 def create_db():
     """
     This creates the database on the first use of the join page
@@ -35,24 +36,19 @@ def create_db():
     """)
     conn.commit()
     cur.execute("""
-    --sql
-        CREATE TABLE IF NOT EXISTS KEYS (
+        CREATE TABLE IF NOT EXISTS Keys (
             Id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
-            UserId INTEGER
+            UserId INTEGER 
         )
-    ;
     """)
     conn.commit()
+
+
     for x in keychars:
-        cur.execute("""
-        --sql
-            ALTER TABLE Keys ADD COLUMN (?) INTEGER DEFAULT 0
-        ;
-        """, (x,))
-
-
+        cmd = f"ALTER TABLE Keys ADD COLUMN {x} INTEGER DEFAULT 0"
+        cur.execute(cmd)
+        conn.commit()
     conn.close()
-
 
 #################################################################
 def create_user(un, pswd):
