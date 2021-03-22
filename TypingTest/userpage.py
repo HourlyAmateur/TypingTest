@@ -40,6 +40,7 @@ def user_page(stdscr, id, un):
             stdscr.clear()
             elapsedtime, totwpm, missedkeys = Typing_TestV2.type_test(stdscr)
             usersetup.add_stats(id, elapsedtime, totwpm)
+            usersetup.add_keys(id, missedkeys)
             stdscr.clear()
         
     return

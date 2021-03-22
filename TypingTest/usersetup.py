@@ -181,11 +181,30 @@ def add_stats(pk, time, wpm):
 
 def add_keys(pk, missed):
     """
-    WORK IN PROGRESS
     adds missed keys to the database
     """
     conn = sl.connect("userdata.sqlite")
     cur = conn.cursor()
-    cur.executemany("""
-        INSERT INTO Stats key VALUES (?) WHERE UserId = pk
-    """, missed)
+    for i in missed:
+        if i in string.ascii_letters:
+            cur.execute(f"""
+                UPDATE Keys SET {i} = {i} + 1 WHERE UserId = {pk}
+            """)
+            conn.commit()
+        else: pass
+    conn.close()
+
+#######################################################################
+
+def missed_most(pk):
+    """
+    pulls all missed keys and returns the 3 most offten missed
+    """
+
+    conn = sl.connect("userdata.sqlite")
+    cur = conn.cursor()
+    cur.execute("""
+    --sql
+        SELECT * FROM Keys WHERE UserId = pk
+    ;
+    """)
