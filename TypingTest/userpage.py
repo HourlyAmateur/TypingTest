@@ -28,7 +28,7 @@ def user_page(stdscr, id, un):
         stdscr.addstr(10, 15, f"Welcome Back {un}")
         stdscr.addstr(12, 15, f"You have spent {round(totaltime,1)} miniutes typing")
         stdscr.addstr(13, 15, f"Congratulations you have completed {completed} texts")
-        stdscr.addstr(14, 15, f"Your current typing speed average is {round(wpm, 1)} Words per miniute")
+        stdscr.addstr(14, 15, f"Your current typing speed average is {round(wpm, 1)} WPM")
         stdscr.addstr(15, 15, f"Your top 3 most often missed keys are {missedmost}")
         stdscr.addstr(17, 15, "Press Enter to play todays text")
         stdscr.addstr(18, 15, "Press Escape to Exit")
@@ -39,8 +39,7 @@ def user_page(stdscr, id, un):
         else:
             stdscr.clear()
             elapsedtime, totwpm, missedkeys = Typing_TestV2.type_test(stdscr)
-            usersetup.add_stats(id, elapsedtime, totwpm)
-            usersetup.add_keys(id, missedkeys)
+            usersetup.add_stats(id, elapsedtime, totwpm, missedkeys)
             stdscr.clear()
         
     return

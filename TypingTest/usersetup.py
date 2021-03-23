@@ -29,26 +29,13 @@ def create_db():
             TotalTime REAL DEFAULT 0.0,
             Completed INTEGER DEFAULT 0,
             WpmAverage REAL DEFAULT 0.0,
-            MissedKeys TEXT,
+            MissedKeys TEXT DEFAULT '!',
             MissedMost TEXT,
             UserId INTEGER
             )
     """)
     conn.commit()
-    cur.execute("""
-        CREATE TABLE IF NOT EXISTS Keys (
-            Id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
-            UserId INTEGER 
-        )
-    """)
-    conn.commit()
-
-
-    for x in keychars:
-        cmd = f"ALTER TABLE Keys ADD COLUMN {x} INTEGER DEFAULT 0"
-        cur.execute(cmd)
-        conn.commit()
-    conn.close()
+   
 
 #################################################################
 def create_user(un, pswd):
@@ -69,11 +56,6 @@ def create_user(un, pswd):
     cur.execute("""
     --sql
         INSERT INTO Stats (UserId) VALUES (?)
-    ;
-    """, (userid[0], ))
-    cur.execute("""
-    --sql
-        INSERT INTO keys (UserId) VALUES (?)
     ;
     """, (userid[0], ))
     conn.commit
@@ -136,7 +118,7 @@ def user_stats(id):
 
 ##################################################################
 
-def add_stats(pk, time, wpm):
+def add_stats(pk, time, wpm, missed):
     """
     adds user data to the statistics table
     """
@@ -175,23 +157,39 @@ def add_stats(pk, time, wpm):
         """, (wpm, pk))
 
     conn.commit()
-    conn.close()
 
-####################################################################
+    cur.execute("""
+    --sql
+        UPDATE Stats SET MissedKeys = MissedKeys || ? WHERE UserId = ? 
+    ;
+    """, (missed, pk))
+    conn.commit()
 
-def add_keys(pk, missed):
-    """
-    adds missed keys to the database
-    """
-    conn = sl.connect("userdata.sqlite")
-    cur = conn.cursor()
-    for i in missed:
-        if i in string.ascii_letters:
-            cur.execute(f"""
-                UPDATE Keys SET {i} = {i} + 1 WHERE UserId = {pk}
-            """)
-            conn.commit()
-        else: pass
+    cur.execute("""
+    --sql
+        SELECT MissedKeys FROM Stats WHERE UserId = ?
+    ;
+    """, (pk, ))
+    miss = cur.fetchone()
+    keylist = sorted(list(miss[0]))
+    keydict = {}
+    for i in keylist:
+        keydict[i] = keydict.get(i, 1) + 1
+
+    sortedkeys = sorted(keydict.items(), key=lambda x: x[1])
+
+    mostst = ""
+    most = sortedkeys[-3:]
+    for k,v in most[::-1]:
+        mostst += k
+        
+
+    cur.execute("""
+    --sql
+        UPDATE Stats SET MissedMost = ? WHERE UserId = ?
+    ;
+    """, (mostst, pk))
+    conn.commit()
     conn.close()
 
 #######################################################################

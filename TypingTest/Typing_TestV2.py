@@ -23,7 +23,7 @@ def type_test(stdscr):
     curses.cbreak()
     curses.resize_term(30, 75)  
     stdscr.keypad(True)
-    missedkeys = []
+    missedkeys = ""
 
     y = 5                                         # y axis start point
     characters = ""
@@ -80,7 +80,7 @@ def type_test(stdscr):
             elif key != ord(characters[characterstyped]):                    # missed key
                 typed += 'X'
                 curses.beep()
-                missedkeys.append(characters[characterstyped])
+                missedkeys += characters[characterstyped]
                 characterstyped += 1
                 linetyped += 1
 
