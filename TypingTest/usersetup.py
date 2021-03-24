@@ -181,7 +181,12 @@ def add_stats(pk, time, wpm, missed):
     mostst = ""
     most = sortedkeys[-3:]
     for k,v in most[::-1]:
-        mostst += k
+        if k == '\n':
+            mostst += "ENT, "
+        elif k == ' ':
+            mostst += "SPC, "
+        else:
+            mostst += k+", "
         
 
     cur.execute("""
@@ -194,15 +199,15 @@ def add_stats(pk, time, wpm, missed):
 
 #######################################################################
 
-def missed_most(pk):
-    """
-    pulls all missed keys and returns the 3 most offten missed
-    """
+# def missed_most(pk):
+#     """
+#     pulls all missed keys and returns the 3 most offten missed
+#     """
 
-    conn = sl.connect("userdata.sqlite")
-    cur = conn.cursor()
-    cur.execute("""
-    --sql
-        SELECT * FROM Keys WHERE UserId = pk
-    ;
-    """)
+#     conn = sl.connect("userdata.sqlite")
+#     cur = conn.cursor()
+#     cur.execute("""
+#     --sql
+#         SELECT * FROM Keys WHERE UserId = pk
+#     ;
+#     """)

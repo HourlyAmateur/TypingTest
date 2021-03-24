@@ -60,7 +60,13 @@ def log_in(stdscr):
 
         
         name = usersetup.user_login(username, password)        # returns a tuple (Id, UserName, Password) 
-        if name[1] == username:
+        if name == None:
+            stdscr.clear()
+            stdscr.refresh()
+            stdscr.addstr(15,20, "Invalid Credentials Please Try Again")
+            stdscr.refresh()
+            time.sleep(3)
+        elif name[1] == username:
             userpage.user_page(stdscr, name[0], name[1])
             trying = False
             
