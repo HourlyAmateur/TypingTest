@@ -9,28 +9,31 @@ def wiki_pull():
 
     nonbreakingspace = 160
 
-    file = requests.get("https://en.wikipedia.org")
-    if file.ok == True:
-        soup = bs(file.text, features="html.parser")
-        soup = soup.find('p')
-        if len(soup) < 10:
-            soup = soup.find(id='mp-tfa')
-        soup = soup.text.translate(non_bmp_map)
-        soup = str(soup)
-        soup = soup.lstrip().rstrip()
-        
-        with open("typetext.txt", "w", encoding="utf8") as text:
-            count = 0
-            for x in soup:
-                if x == '\n':
-                    break
-                elif ord(x) == nonbreakingspace:
-                    text.write(' ')
-                    count += 1
-                elif x == ' ' and count > 60:
-                    text.write('\n')
-                    count = 0
-                else:
-                    text.write(x)
-                    count += 1 
+    try:
+        file = requests.get("https://en.wikipedia.org")
+        if file.ok == True:
+            soup = bs(file.text, features="html.parser")
+            soup = soup.find('p')
+            if len(soup) < 10:
+                soup = soup.find(id='mp-tfa')
+            soup = soup.text.translate(non_bmp_map)
+            soup = str(soup)
+            soup = soup.lstrip().rstrip()
+            
+            with open("typetext.txt", "w", encoding="utf8") as text:
+                count = 0
+                for x in soup:
+                    if x == '\n':
+                        break
+                    elif ord(x) == nonbreakingspace:
+                        text.write(' ')
+                        count += 1
+                    elif x == ' ' and count > 60:
+                        text.write('\n')
+                        count = 0
+                    else:
+                        text.write(x)
+                        count += 1 
+    except:
+        return
 
