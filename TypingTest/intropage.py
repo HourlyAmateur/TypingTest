@@ -9,7 +9,7 @@ menu = ["FREE PLAY", "LOG IN", "JOIN", "QUIT"]
 
 def printmenu(stdscr, selected):
     
-
+    curses.noecho()
     stdscr.clear()
     curses.resize_term(30, 70)
     h, w = stdscr.getmaxyx()

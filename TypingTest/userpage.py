@@ -8,8 +8,7 @@ play = True
 def user_page(stdscr, id, un):
     while play == True:
         stdscr.clear()
-        curses.echo()
-        curses.curs_set(2)
+        curses.curs_set(0)
         curses.init_pair(2, curses.COLOR_RED, curses.COLOR_BLACK)
         curses.use_default_colors()
         curses.cbreak()
@@ -39,5 +38,4 @@ def user_page(stdscr, id, un):
             elapsedtime, totwpm, missedkeys = Typing_TestV2.type_test(stdscr)
             usersetup.add_stats(id, elapsedtime, totwpm, missedkeys)
             stdscr.clear()
-        
     return

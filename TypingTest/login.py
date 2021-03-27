@@ -77,4 +77,5 @@ def log_in(stdscr):
             stdscr.refresh()
             time.sleep(3)
     curses.curs_set(0)
+    curses.noecho()
     return
