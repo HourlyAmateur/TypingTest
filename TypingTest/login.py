@@ -17,7 +17,7 @@ def log_in(stdscr):
         curses.init_pair(2, curses.COLOR_RED, curses.COLOR_BLACK)
         curses.use_default_colors()
         curses.cbreak()
-        curses.resize_term(30, 75) 
+        curses.resize_term(30, 80) 
         curses.update_lines_cols() 
         stdscr.keypad(True)
 
