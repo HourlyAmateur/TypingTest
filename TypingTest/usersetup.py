@@ -196,18 +196,3 @@ def add_stats(pk, time, wpm, missed):
     """, (mostst, pk))
     conn.commit()
     conn.close()
-
-#######################################################################
-
-# def missed_most(pk):
-#     """
-#     pulls all missed keys and returns the 3 most offten missed
-#     """
-
-#     conn = sl.connect("userdata.sqlite")
-#     cur = conn.cursor()
-#     cur.execute("""
-#     --sql
-#         SELECT * FROM Keys WHERE UserId = pk
-#     ;
-#     """)
