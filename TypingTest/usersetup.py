@@ -129,12 +129,15 @@ def add_stats(pk, time, wpm, missed):
         UPDATE Stats SET TotalTime = TotalTime + ? WHERE UserId = ? 
     ;
     """, (time, pk))
-    cur.execute("""
-    --sql
-        UPDATE Stats SET Completed = Completed + 1 WHERE UserId = ?
-    ;
-    """, (pk, ))
-    conn.commit()
+
+    if time > 3:                # only add a completed text if user typed long enought
+        cur.execute("""
+        --sql
+            UPDATE Stats SET Completed = Completed + 1 WHERE UserId = ?
+        ;
+        """, (pk, ))
+        conn.commit()
+    
     cur.execute("""
     --sql
         SELECT Completed FROM Stats WHERE UserId = ?
@@ -150,7 +153,7 @@ def add_stats(pk, time, wpm, missed):
         """, (wpm, pk))
 
     else:
-         cur.execute("""
+        cur.execute("""
         --sql
             UPDATE Stats SET WpmAverage = ? WHERE UserId = ? 
         ;

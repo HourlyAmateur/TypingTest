@@ -62,13 +62,13 @@ def type_test(stdscr):
                 characterstyped += 1
                 linetyped += 1
             elif key == backspace:
-                if characterstyped > 0:                                  # backspace
+                if linetyped > 0:                                  # backspace
                     typed = typed[:-1]
                     stdscr.refresh()
                     characterstyped -= 1
                     linetyped -= 1
                 else:
-                    pass
+                    curses.beep()
             elif key == escape:                                                 # escape key
                 break
             elif key == enter and characters[characterstyped] == '\n':         # enter key
