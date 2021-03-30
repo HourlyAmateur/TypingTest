@@ -1,3 +1,9 @@
+"""
+    This page allows users to create an account that will save their 
+    data in sqlite. 
+    Michael Murphy
+    03/29/2021
+"""
 import curses
 import time
 import bcrypt
@@ -9,10 +15,11 @@ enter = 10
 backspace = 8
 
 def join(stdscr):
+    "Business logic of the join page"
 
     usersetup.create_db()                  
-    noname = True
-    while noname:
+    no_name = True
+    while no_name:
         stdscr.clear()
         curses.echo()
         curses.curs_set(2)
@@ -43,8 +50,8 @@ def join(stdscr):
             else:
                 username += chr(key)
         username = username[:-1]
-        noname = usersetup.user_look_up(username) 
-        if noname == True:
+        no_name = usersetup.user_look_up(username) 
+        if no_name == True:
             stdscr.addstr(8, 32, "There is already a user by that name")
             stdscr.addstr(9, 32, "Please try again.")
             stdscr.refresh()

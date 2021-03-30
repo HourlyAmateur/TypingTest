@@ -1,3 +1,11 @@
+"""
+    The big show. This is the entire point of the program.
+    the user types the paragraph produced and feedback is 
+    provided via that aweful windos sound as well as color changes 
+    to whow what has been typed.
+    Michael Murphy
+    03/29/2021
+"""
 import curses
 import time
 import sqlite3 as sq 
@@ -23,7 +31,7 @@ def type_test(stdscr):
     curses.cbreak()
     curses.resize_term(30, 80)  
     stdscr.keypad(True)
-    missedkeys = ""
+    missed_keys = ""
 
     y = 5                                         # y axis start point
     characters = ""
@@ -35,70 +43,70 @@ def type_test(stdscr):
                 characters += character               # list of all characters for error checking
     text.close()
     
-    linelist = characters.split('\n')
+    line_list = characters.split('\n')
 
     y = 5
     stdscr.move(y, 0)
-    characterstyped = 0
-    linetyped = 0
+    characters_typed = 0
+    line_typed = 0
     typed = ''
-    linenum = 0
-    while characterstyped < len(characters):
+    line_number = 0
+    while characters_typed < len(characters):
         try:
-            stdscr.addstr(y, 0, typed[:linetyped], curses.color_pair(2))
-            stdscr.addstr(y, linetyped, linelist[linenum][linetyped:])
+            stdscr.addstr(y, 0, typed[:line_typed], curses.color_pair(2))
+            stdscr.addstr(y, line_typed, line_list[line_number][line_typed:])
             stdscr.clrtoeol()
             key = stdscr.getch()
-            if key == enter and characters[characterstyped] == '\n':               # enter key
+            if key == enter and characters[characters_typed] == '\n':               # enter key
                 y += 1
                 stdscr.move(y, 0)
                 typed = ""
-                characterstyped += 1
-                linetyped = 0
-                linenum +=1
+                characters_typed += 1
+                line_typed = 0
+                line_number +=1
 
-            elif key == ord(characters[characterstyped]):
+            elif key == ord(characters[characters_typed]):
                 typed += chr(key)
-                characterstyped += 1
-                linetyped += 1
+                characters_typed += 1
+                line_typed += 1
             elif key == backspace:
-                if linetyped > 0:                                  # backspace
+                if line_typed > 0:                                  # backspace
                     typed = typed[:-1]
                     stdscr.refresh()
-                    characterstyped -= 1
-                    linetyped -= 1
+                    characters_typed -= 1
+                    line_typed -= 1
                 else:
                     curses.beep()
             elif key == escape:                                                 # escape key
                 break
-            elif key == enter and characters[characterstyped] == '\n':         # enter key
+            elif key == enter and characters[characters_typed] == '\n':         # enter key
                 y += 1
                 stdscr.move(y, 0)
                 typed += chr(key)
-                characterstyped += 1
-                linetyped = 0
-            elif key != ord(characters[characterstyped]):                    # missed key
+                characters_typed += 1
+                line_typed = 0
+            elif key != ord(characters[characters_typed]):                    # missed key
                 typed += 'X'
                 curses.beep()
-                missedkeys += characters[characterstyped]
-                characterstyped += 1
-                linetyped += 1
+                missed_keys += characters[characters_typed]
+                characters_typed += 1
+                line_typed += 1
 
             else:
                 raise AssertionError
             stdscr.refresh()
         except:
-            return missedkeys
+            return missed_keys
     endtime = time.perf_counter()
-    words = characterstyped / 4.7                                      # avg english word is 4.7 characters 
-    elapsedtime = int(endtime - starttime) / 60
-    wordspermin = words / elapsedtime
+    words = characters_typed / 4.7                                      # avg english word is 4.7 characters 
+    elapsed_time = int(endtime - starttime) / 60
+    words_per_min = words / elapsed_time
     stdscr.clear()
     stdscr.addstr(10, 10, f"you typed {round(words, 1)} words")
-    stdscr.addstr(11, 10, f"you missed {len(missedkeys)} keys")
-    stdscr.addstr(12, 10, f"total time typing = {round(elapsedtime, 1)} minutes")
-    stdscr.addstr(13, 10, f"you typed {round(wordspermin, 1)} words per min on average")
+    stdscr.addstr(11, 10, f"you missed {len(missed_keys)} keys")
+    stdscr.addstr(12, 10, f"total time typing = {round(elapsed_time, 1)} minutes")
+    stdscr.addstr(13, 10, f"you typed {round(words_per_min, 1)} words per min on average")
     stdscr.addstr(14, 10, "press any key to return to the main menu")
     stdscr.getch()
     
-    return (elapsedtime, wordspermin, missedkeys)
+    return (elapsed_time, words_per_min, missed_keys)

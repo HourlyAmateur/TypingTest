@@ -1,3 +1,10 @@
+"""
+    This module stores all of the functions used for 
+    accessing the database.
+    Michael Murphy
+    03/29/2021
+"""
+
 import sqlite3 as sl
 import string
 import bcrypt
@@ -174,15 +181,15 @@ def add_stats(pk, time, wpm, missed):
     ;
     """, (pk, ))
     miss = cur.fetchone()
-    keylist = sorted(list(miss[0]))
-    keydict = {}
-    for i in keylist:
-        keydict[i] = keydict.get(i, 1) + 1
+    key_list = sorted(list(miss[0]))
+    key_dict = {}
+    for i in key_list:
+        key_dict[i] = key_dict.get(i, 1) + 1
 
-    sortedkeys = sorted(keydict.items(), key=lambda x: x[1])
+    sorted_keys = sorted(key_dict.items(), key=lambda x: x[1])
 
     mostst = ""
-    most = sortedkeys[-3:]
+    most = sorted_keys[-3:]
     for k,v in most[::-1]:
         if k == '\n':
             mostst += "ENT, "

@@ -1,3 +1,10 @@
+"""
+    This page is where the user will log into their 
+    account.
+    Michael Murphy
+    03/29/2021 
+"""
+
 import usersetup
 import userpage
 import curses
@@ -9,6 +16,8 @@ enter = 10
 backspace = 8
 
 def log_in(stdscr):
+    "Runs the business logic of the login page"
+
     trying = True
     while trying:
         stdscr.clear()

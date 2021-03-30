@@ -1,3 +1,9 @@
+"""
+    This is where the user lands and their data is
+    presented. 
+    Michael Murphy
+    03/29/2021
+"""
 import curses
 import time
 import usersetup
@@ -17,16 +23,16 @@ def user_page(stdscr, id, un):
         stdscr.keypad(True)
 
         data = usersetup.user_stats(id)
-        totaltime = data[2]
+        total_time = data[2]
         completed = data[3]
         wpm = data[4]
-        missedmost = data[6]
+        missed_most = data[6]
 
         stdscr.addstr(10, 15, f"Welcome Back {un}")
-        stdscr.addstr(12, 15, f"You have spent {round(totaltime,1)} miniutes typing")
+        stdscr.addstr(12, 15, f"You have spent {round(total_time,1)} miniutes typing")
         stdscr.addstr(13, 15, f"Congratulations you have completed {completed} texts")
         stdscr.addstr(14, 15, f"Your current typing speed average is {round(wpm, 1)} WPM")
-        stdscr.addstr(15, 15, f"Your top 3 most often missed keys are: {missedmost}")
+        stdscr.addstr(15, 15, f"Your top 3 most often missed keys are: {missed_most}")
         stdscr.addstr(17, 15, "Press Enter to play todays text")
         stdscr.addstr(18, 15, "Press Escape to Exit")
         stdscr.refresh()
@@ -35,7 +41,7 @@ def user_page(stdscr, id, un):
             return
         else:
             stdscr.clear()
-            elapsedtime, totwpm, missedkeys = Typing_TestV2.type_test(stdscr)
-            usersetup.add_stats(id, elapsedtime, totwpm, missedkeys)
+            elapsed_time, total_wpm, missed_keys = Typing_TestV2.type_test(stdscr)
+            usersetup.add_stats(id, elapsed_time, total_wpm, missed_keys)
             stdscr.clear()
     return
