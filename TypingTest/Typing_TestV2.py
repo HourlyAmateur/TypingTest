@@ -100,7 +100,12 @@ def type_test(stdscr):
     endtime = time.perf_counter()
     words = characters_typed / 4.7                                      # avg english word is 4.7 characters 
     elapsed_time = int(endtime - starttime) / 60
-    words_per_min = words / elapsed_time
+    
+    if words == 0:
+            words_per_min = 0
+    else:
+        words_per_min = words / elapsed_time
+    
     stdscr.clear()
     stdscr.addstr(10, 10, f"you typed {round(words, 1)} words")
     stdscr.addstr(11, 10, f"you missed {len(missed_keys)} keys")

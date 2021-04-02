@@ -159,14 +159,17 @@ def add_stats(pk, time, wpm, missed):
         ;
         """, (wpm, pk))
 
-    else:
+    elif complete[0] < 1 and time > 2:
         cur.execute("""
         --sql
             UPDATE Stats SET WpmAverage = ? WHERE UserId = ? 
         ;
         """, (wpm, pk))
+    else:
+        pass
 
     conn.commit()
+
 
     cur.execute("""
     --sql
