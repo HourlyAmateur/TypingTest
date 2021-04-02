@@ -7,7 +7,7 @@
 """
 
 
-import curses
+import curses 
 import time
 import Typing_TestV2
 import join

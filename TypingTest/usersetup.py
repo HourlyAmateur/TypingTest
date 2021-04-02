@@ -151,7 +151,7 @@ def add_stats(pk, time, wpm, missed):
     ;
     """, (pk, ))
     complete = cur.fetchone()
-    if complete[0] > 1:
+    if complete[0] > 1 and time > 2:
 
         cur.execute("""
         --sql
