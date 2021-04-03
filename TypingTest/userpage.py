@@ -10,6 +10,7 @@ import usersetup
 import Typing_TestV2
 
 escape = 27
+enter = 10
 play = True
 def user_page(stdscr, id, un):
     while play == True:
@@ -39,9 +40,11 @@ def user_page(stdscr, id, un):
         key = stdscr.getch()
         if key == escape:
             return
-        else:
+        elif key == enter:
             stdscr.clear()
             elapsed_time, total_wpm, missed_keys = Typing_TestV2.type_test(stdscr)
             usersetup.add_stats(id, elapsed_time, total_wpm, missed_keys)
             stdscr.clear()
+        else: 
+            pass
     return

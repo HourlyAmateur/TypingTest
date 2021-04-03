@@ -98,7 +98,7 @@ def type_test(stdscr):
         except:
             return missed_keys
     endtime = time.perf_counter()
-    words = characters_typed / 4.7                                      # avg english word is 4.7 characters 
+    words = (characters_typed - len(missed_keys)) / 4.7                                      # avg english word is 4.7 characters 
     elapsed_time = int(endtime - starttime) / 60
     
     if words == 0:
