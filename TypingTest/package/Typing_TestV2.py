@@ -17,10 +17,12 @@ import requests
 from bs4 import BeautifulSoup as bs
 from bs4 import UnicodeDammit as ud
 import sys
+import selenium.webdriver as webdriver
 
 escape = 27
 enter = 10
 backspace = 8
+space = 32
 
 def wiki_pull():
     non_bmp_map = dict.fromkeys(range(0x10000, sys.maxunicode + 1), 0xfffd)
@@ -30,8 +32,11 @@ def wiki_pull():
     try:
         file = requests.get("https://en.wikipedia.org")
         if file.ok == True:
-            soup = bs(file.text, features="html.parser")
+            soup = bs(file.text, features="html.parser") 
             soup = soup.find('p')
+            href = soup.find_next('a')
+            href = href.get('href')
+            href = "https://en.wikipedia.org"+href
             if len(soup) < 10:
                 soup = soup.find(id='mp-tfa')
             soup = soup.text.translate(non_bmp_map)
@@ -52,8 +57,9 @@ def wiki_pull():
                     else:
                         text.write(x)
                         count += 1 
+        return href
     except:
-        return
+        return 
 
 
 
@@ -63,7 +69,7 @@ def type_test(stdscr):
     generate text that the user practices typing on.
     
     """
-    wiki_pull()
+    href = wiki_pull()
     starttime = time.perf_counter()
     curses.curs_set(0)
     curses.init_pair(2, curses.COLOR_RED, curses.COLOR_BLACK)
@@ -148,11 +154,15 @@ def type_test(stdscr):
         words_per_min = words / elapsed_time
     
     stdscr.clear()
-    stdscr.addstr(10, 10, f"you typed {round(words, 1)} words")
-    stdscr.addstr(11, 10, f"you missed {len(missed_keys)} keys")
-    stdscr.addstr(12, 10, f"total time typing = {round(elapsed_time, 1)} minutes")
-    stdscr.addstr(13, 10, f"you typed {round(words_per_min, 1)} words per min on average")
-    stdscr.addstr(14, 10, "press any key to return to the main menu")
-    stdscr.getch()
+    stdscr.addstr(10, 10, f"You typed {round(words, 1)} words")
+    stdscr.addstr(11, 10, f"You missed {len(missed_keys)} keys")
+    stdscr.addstr(12, 10, f"Total time typing = {round(elapsed_time, 1)} minutes")
+    stdscr.addstr(13, 10, f"You typed {round(words_per_min, 1)} words per min on average")
+    stdscr.addstr(14, 10, "Press Enter to return to the main menu")
+    stdscr.addstr(17, 10, "Press Space if you would like to read more about the topic")
+    next = stdscr.getch()
+    if next == space:
+        browser = webdriver.Chrome("C:\\Users\\clean\\Desktop\\Utilities\\chromedriver")
+        browser.get(href)
     
     return (elapsed_time, words_per_min, missed_keys)
