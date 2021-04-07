@@ -9,7 +9,7 @@
 import curses
 import time
 import sqlite3 as sq 
-import gettext
+from gettext import wiki_pull
 import usersetup
 
 escape = 27
@@ -22,7 +22,7 @@ def type_test(stdscr):
     generate text that the user practices typing on.
     
     """
-    gettext.wiki_pull()
+    wiki_pull()
     starttime = time.perf_counter()
     curses.curs_set(0)
     curses.init_pair(2, curses.COLOR_RED, curses.COLOR_BLACK)
