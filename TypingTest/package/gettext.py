@@ -12,8 +12,11 @@ def wiki_pull():
     try:
         file = requests.get("https://en.wikipedia.org")
         if file.ok == True:
-            soup = bs(file.text, features="html.parser")
+            soup = bs(file.text, features="html.parser") 
             soup = soup.find('p')
+            href = soup.find_next('a')
+            href = href.get('href')
+            href = "https://en.wikipedia.org"+href
             if len(soup) < 10:
                 soup = soup.find(id='mp-tfa')
             soup = soup.text.translate(non_bmp_map)
