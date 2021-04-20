@@ -15,7 +15,6 @@ import curses
 import time
 import requests
 from bs4 import BeautifulSoup as bs
-from bs4 import UnicodeDammit as ud
 import sys
 import selenium.webdriver as webdriver
 
@@ -25,9 +24,13 @@ backspace = 8
 space = 32
 
 def wiki_pull():
+    """
+    This function pulls the article of the day from 
+    wikipedia and stores it in typingtext.txt
+    """
+    
+    # a piece of code i got from github to help with unicode translation
     non_bmp_map = dict.fromkeys(range(0x10000, sys.maxunicode + 1), 0xfffd)
-
-    nonbreakingspace = 160
 
     try:
         file = requests.get("https://en.wikipedia.org")
@@ -65,7 +68,7 @@ def wiki_pull():
 
 def type_test(stdscr):
     """
-    this is the main program function it uses gettext.py to 
+    this is the main program function it uses wikie_pull to 
     generate text that the user practices typing on.
     
     """
