@@ -48,7 +48,7 @@ def wiki_pull():
                 for x in soup:
                     if x == '\n':
                         break
-                    elif ord(x) == nonbreakingspace:
+                    elif ord(x) > 127:
                         text.write(' ')
                         count += 1
                     elif x == ' ' and count > 55:
