@@ -5,7 +5,6 @@
     03/29/2021
 """
 import curses
-import time
 import usersetup
 import Typing_TestV2
 

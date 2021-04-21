@@ -8,7 +8,6 @@
 import sqlite3 as sl
 import string
 import bcrypt
-import time
 
 keychars = []
 [keychars.append(x) for x in string.ascii_uppercase]

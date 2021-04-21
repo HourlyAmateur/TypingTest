@@ -8,7 +8,6 @@
 import usersetup
 import userpage
 import curses
-import sqlite3 as sl
 import time
 
 escape = 27

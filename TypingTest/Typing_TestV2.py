@@ -16,7 +16,7 @@ import time
 import requests
 from bs4 import BeautifulSoup as bs
 import sys
-import selenium.webdriver as webdriver
+import webbrowser
 
 escape = 27
 enter = 10
@@ -165,7 +165,7 @@ def type_test(stdscr):
     stdscr.addstr(17, 10, "Press Space if you would like to read more about the topic")
     next = stdscr.getch()
     if next == space:
-        browser = webdriver.Chrome("C:\\Users\\clean\\Desktop\\Utilities\\chromedriver")
-        browser.get(href)
+        webbrowser.open(href)
+        
     
     return (elapsed_time, words_per_min, missed_keys)
