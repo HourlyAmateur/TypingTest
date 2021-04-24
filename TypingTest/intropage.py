@@ -1,3 +1,6 @@
+#!/usr/bin/env python3
+
+
 """
     This module is the entry point for this program. 
     This program grabs the days featured article from wikipedia

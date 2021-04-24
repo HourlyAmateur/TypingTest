@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 """
     This module stores all of the functions used for 
     accessing the database.

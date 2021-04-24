@@ -1,3 +1,6 @@
+#!/usr/bin/env python3
+
+
 """
     This page allows users to create an account that will save their 
     data in sqlite. 

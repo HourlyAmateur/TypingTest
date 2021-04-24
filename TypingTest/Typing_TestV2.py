@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 """
     This is the entire point of the program.
     The user types the paragraph produced. Feedback is 
